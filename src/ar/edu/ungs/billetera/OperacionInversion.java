@@ -1,4 +1,4 @@
-package tpProg2;
+package ar.edu.ungs.billetera;
 
 public class OperacionInversion extends Inversion {
 	private Inversion inversion;

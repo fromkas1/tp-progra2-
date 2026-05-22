@@ -1,4 +1,4 @@
-package tpProg2;
+package ar.edu.ungs.billetera;
 
 public class CuentaRegular {
 	private double limite_saldo;

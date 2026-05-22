@@ -1,4 +1,4 @@
-package tpProg2;
+package ar.edu.ungs.billetera;
 
 import java.util.List;
 

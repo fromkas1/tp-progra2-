@@ -1,4 +1,4 @@
-package tpProg2;
+package ar.edu.ungs.billetera;
 
 public class CuentaCorporativa {
 	public CuentaCorporativa(String cUITempresa, boolean autorizadoEmpresa) {

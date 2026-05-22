@@ -1,6 +1,4 @@
-package tpProg2;
-
-
+package ar.edu.ungs.billetera;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +17,7 @@ public class BilleteraTest {
         billetera.registrarUsuario("22222222", "Bob", "456", "b@test.com");
 
         // TODO: inicializar Utilitarios con valoraciones para las pruenas
-        // que permitan calcular los intereses parciales y totales. asÃ­ como los
+        // que permitan calcular los intereses parciales y totales. así como los
         // vencimientos de las inversiones
         Utilitarios.definirHoy(LocalDate.now());
         Utilitarios.actualizarCotizacion("USD", 1000);
@@ -147,10 +145,10 @@ public class BilleteraTest {
         // Despues de precancelar, el saldo invertido debe bajar a 0
         assertEquals(0.0, billetera.obtenerTotalInvertido("11111111"), 0.01);
 
-        // monto_invertido x (taza_interes / 365 dias_del_aÃ±o) * cant_dias
+        // monto_invertido x (taza_interes / 365 dias_del_año) * cant_dias
         double interesesEsperados = 500000 * (0.20 / 365) * 20;
         double saldoEsperado = 2000000D; // saldo inicial
-        saldoEsperado += interesesEsperados / 2; // la mitad porque fuÃ© precancelado.
+        saldoEsperado += interesesEsperados / 2; // la mitad porque fué precancelado.
 
         assertEquals(saldoEsperado, billetera.obtenerSaldoDisponible(cvuAlice), 0.01);
     }
