@@ -1,20 +1,28 @@
 package ar.edu.ungs.billetera;
 
-import java.lang.reflect.Constructor;
-
-public class VinculadaaDivisa {
+public class VinculadaaDivisa extends Inversion implements Precancelable{
 	private String divisaRefencia;
 	private double tasaInteresDivisa;
 	
-	public VinculadaaDivisa(String divisaRefencia, double tasaInteresDivisa) {
-		
+	public VinculadaaDivisa(int ID, int plazoDias, double montoInvertido, String divisaRefencia, double tasaInteresDivisa) {
+		super(ID, plazoDias, montoInvertido);
 		this.divisaRefencia = divisaRefencia;
 		this.tasaInteresDivisa = tasaInteresDivisa;
 	}
 	
-	public float precancelar() {return 0;}
+	public double precancelar() {
+		
+		return 0;
+	}
 	
-	private float calcularResultado(Cuenta cuenta) {}
-	
-	
+	public double calcularResultado(Cuenta cuenta) {
+		
+		return 0;
+	}
+
+	@Override
+	public String toString() {
+		
+		return null;
+	}	
 }

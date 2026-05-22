@@ -1,21 +1,33 @@
 package ar.edu.ungs.billetera;
 
-public class CuentaCorporativa {
-	public CuentaCorporativa(String cUITempresa, boolean autorizadoEmpresa) {
+public class CuentaCorporativa extends Cuenta{
+	private Empresa empresaPerteneciente;
+	private boolean usuarioAutorizadoPorEmpresa;
+	
+	public CuentaCorporativa(String CVU, String alias, String DNIPropietario, boolean usuarioAutorizadoPorEmpresa) {
+		super(CVU, alias, DNIPropietario);
+		this.usuarioAutorizadoPorEmpresa = usuarioAutorizadoPorEmpresa;
+	}
+	
+	public boolean puedeInvertir(Inversion inverion, boolean monto) {
 		
-		this.CUITempresa = CUITempresa;
-		this.autorizadoEmpresa = autorizadoEmpresa;
+		
+		return monto;
+	}
+	
+	
+	public void validarAutorizacion() {
+		
+		
 	}
 
 
-	private String CUITempresa;
-	private boolean autorizadoEmpresa;
-	
-	
-	public boolean puedeInvertir(Inversion inverion, float monto) {}
-	
-	
-	public void validarAutorizacion() {}
+	@Override
+	public String toString() {
+		
+		
+		return null;
+	}
 }
 
 

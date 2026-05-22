@@ -3,17 +3,25 @@ package ar.edu.ungs.billetera;
 import java.time.LocalDate;
 
 public abstract class Inversion {
-	private LocalDate fechainicio;
-	private int plazoDias;
-	private double montoInvertido;
-	private boolean estadoActivo;
+	protected int ID;
+	protected LocalDate fechainicio;
+	protected int plazoDias;
+	protected double montoInvertido;
+	protected boolean estadoActivo;
 	
-	private constructor() {
-		this.fechainicio=fechainicio;
-		this.plazoDias=plazoDias;
-		this.montoInvertido=montoInvertido;
-		this.estadoActivo=estadoActivo;
+	public Inversion(int ID, int plazoDias, double montoInvertido) {
+		this.ID = ID;
+		this.fechainicio = Utilitarios.hoy();
+		this.plazoDias = plazoDias;
+		this.montoInvertido = montoInvertido;
+		this.estadoActivo = true;
 	} 
 
-	public float calcularResultado(Cuenta cuentaAsociada) {}
+	public int getPlazoDias() { //lo usamos para el toString de OperacionInversion
+		return this.plazoDias;
+	}
+	
+	public abstract double calcularResultado(Cuenta cuentaAsociada);
+	
+	public abstract String toString();
 }

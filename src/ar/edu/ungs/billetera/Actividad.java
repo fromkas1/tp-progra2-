@@ -3,14 +3,16 @@ package ar.edu.ungs.billetera;
 import java.time.LocalDate;
 
 public abstract class Actividad {
-	private String numeroOperacion;
-	private LocalDate fecha;
-	private double monto;
+	protected String numeroOperacion;
+	protected LocalDate fecha;
+	protected double monto;
 	
-	public void constructor() {
-		this.fecha=fecha;
-		this.numeroOperacion=numeroOperacion;
-		this.monto=monto;
+	public Actividad(String numeroOperacion, double monto) {
+		this.fecha = Utilitarios.hoy();
+		this.numeroOperacion = numeroOperacion;
+		this.monto = monto;
 	}
-public String mostrarDetalleOperacion() {}
+	
+	public abstract String toString();
+
 }

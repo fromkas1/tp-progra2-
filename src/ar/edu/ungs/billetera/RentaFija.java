@@ -1,17 +1,26 @@
 package ar.edu.ungs.billetera;
 
-public class RentaFija {
+public class RentaFija extends Inversion implements Precancelable{
+	private double tasaInteres;
 	
-	
-	
-
-	private double tasainteres;
-	public RentaFija(double tasainteres) {
-		this.tasainteres = tasainteres;
+	public RentaFija(int ID, int plazoDias, double montoInvertido, double tasaInteres) {
+		super(ID, plazoDias, montoInvertido);
+		this.tasaInteres = tasaInteres;
 	}
 	
-	public float precancelar() {}
+	public double precancelar() {
+		
+		return 0;
+	}
 	
-	private float calcularResultado(Cuenta cuenta) {}
+	public double calcularResultado(Cuenta cuenta) {
+		
+		return 0;
+	}
 
+	@Override
+	public String toString() {
+		
+		return null;
+	}
 }

@@ -3,12 +3,18 @@ package ar.edu.ungs.billetera;
 import java.util.*;
 
 public class Empresa {
-	public Empresa(String cuit, List<String> dniautorizados) {
-		super();
-		this.cuit = cuit;
-		this.dniautorizados = dniautorizados;
+	private String CUIT;
+	private String nombre;
+	private Set<String> DNIAutorizados;
+	
+	public Empresa(String CUIT, String nombre) {
+		this.CUIT = CUIT;
+		this.nombre = nombre;
+		this.DNIAutorizados = new HashSet<>();
 	}
-	private String cuit;
-	private List<String>dniautorizados;
+	
+	public void agregarAutorizado(String DNI) {
+		
+	}
 
 }

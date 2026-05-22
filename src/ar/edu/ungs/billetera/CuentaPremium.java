@@ -1,15 +1,25 @@
 package ar.edu.ungs.billetera;
 
-public class CuentaPremium {
-	public CuentaPremium(double monto_minimo) {
-		super();
-		this.monto_minimo = monto_minimo;
+public class CuentaPremium extends Cuenta{
+	private final double MONTO_MINIMO = 500000;
+	
+	public CuentaPremium(String CVU, String alias, String DNIPropietario) {
+		super(CVU, alias, DNIPropietario);	
 	}
 
-	private double monto_minimo;
+	public void debitar(boolean monto) {
+		
+	}
 	
+	public void validarReglas() {
+		
+	}
 
-	public void debitar(float monto) {}
-	
-	public void validarReglas() {}
+
+	@Override
+	public String toString() {
+		
+		
+		return null;
+	}
 }
