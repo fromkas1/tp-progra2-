@@ -35,7 +35,7 @@ public abstract class Cuenta {
 		
 		
 	}
- 
+
 	public void invertir(Inversion nuevaInversion, double monto) {
 		
 		
