@@ -45,6 +45,13 @@ public class Usuario {
 	}
 
 	public void agregarCuenta(Cuenta nueva) {
+		if (nueva == null) {
+            throw new IllegalArgumentException("La cuenta no puede ser nula");
+        }
+        if (misCuentas.containsKey(nueva.alias)) {
+            throw new IllegalArgumentException("El alias ya está registrado para el usuario");
+        }
+        misCuentas.put(nueva.alias, nueva);
 
 	}
 
@@ -54,6 +61,10 @@ public class Usuario {
 	}
 
 	public void actualizarTotalInvertido(double monto) {
+		this.totalInvertido += monto;
+        if (this.totalInvertido < 0) {
+            this.totalInvertido = 0;
+        }
 
 	}
 
