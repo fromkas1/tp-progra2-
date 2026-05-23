@@ -74,6 +74,7 @@ public class Usuario {
 
 	public String toString() {
 
-		return "";
+		 return "Usuario{" + "DNI='" + DNI + '\'' + ", nombreYApellido='" + nombreYApellido + '\'' + ", telefono='"
+                + telefono + '\'' + ", email='" + email + '\'' + ", totalInvertido=" + totalInvertido + '}';
 	}
 }
