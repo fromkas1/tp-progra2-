@@ -7,19 +7,22 @@ public class CuentaPremium extends Cuenta{
 		super(CVU, alias, DNIPropietario);	
 	}
 
-	public void debitar(boolean monto) {
-		
+	@Override
+	public boolean puedeAcreditar(double monto) {
+		return true;
 	}
-	
-	public void validarReglas() {
-		
-	}
-
 
 	@Override
+	public boolean puedeDebitar(double monto) {
+		return (this.saldo - monto) >= MONTO_MINIMO;
+	}
+	
+	@Override
 	public String toString() {
+		StringBuilder sb = new StringBuilder();
 		
+		sb.append("Premium: ").append(this.alias).append("(").append(this.CVU).append(")");
 		
-		return null;
+		return sb.toString();
 	}
 }

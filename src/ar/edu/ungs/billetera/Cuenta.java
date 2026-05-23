@@ -27,17 +27,37 @@ public abstract class Cuenta {
 	}
 	
 	public void obtenerSaldo() {
-		
+		return saldo;
 		
 	}
  
 	public void transferir(Cuenta destino, double monto) {
-		
-		
+		if (destino == null) {
+			throw new IllegalArgumentException("Cuenta destino no puede ser nula");
+		}
+		if (monto <= 0) {
+			throw new IllegalArgumentException("Monto debe ser positivo");
+		}
+		if (this.saldo < monto) {
+			throw new IllegalStateException("Saldo insuficiente");
+		}
+		this.saldo -= monto;
+		destino.saldo += monto;
 	}
+		
+	
 
 	public void invertir(Inversion nuevaInversion, double monto) {
-		
+		if (nuevaInversion == null) {
+			throw new IllegalArgumentException("Inversión no puede ser nula");
+		}
+		if (monto <= 0) {
+			throw new IllegalArgumentException("Monto debe ser positivo");
+		}
+		if (saldo < monto) {
+			throw new IllegalStateException("Saldo insuficiente");
+		}
+		saldo -= monto;
 		
 	}
  
