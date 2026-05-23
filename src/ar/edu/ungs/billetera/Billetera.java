@@ -18,9 +18,15 @@ public class Billetera implements IBilletera {
 	
 	//AGREGA LA EMPRESA A MAP TODASLASEMPRESAS - Lanza error si la empresa ya esta registrada o algun campo es invalido.
 	@Override
-	public void registrarEmpresa(String cuit, String nombreFantasia, String telefono, String email,
-			String nombreContacto) {
-		// TODO Auto-generated method stub
+	public void registrarEmpresa(String cuit, String nombreFantasia, String telefono, String email, String nombreContacto) {
+		//validacion si el CUIT ya existe
+		if(this.todasLasEmpresas.containsKey(cuit)) {
+			throw new IllegalArgumentException("La empresa con el CUIT " + cuit + "ya existe");
+		}
+		
+		//la agregamos
+		Empresa nuevaEmpresa = new Empresa(cuit, nombreFantasia, telefono, email, nombreContacto);
+		todasLasEmpresas.put(cuit, nuevaEmpresa);
 		
 	}
 
