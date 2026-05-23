@@ -10,17 +10,17 @@ public class RentaFija extends Inversion implements Precancelable{
 	
 	public double precancelar() {
 		
-		return 0;
+		
 	}
 	
 	public double calcularResultado(Cuenta cuenta) {
 		
-		return 0;
+		return montoInvertido + montoInvertido * tasaInteres * plazoDias / 365.0;
 	}
 
 	@Override
 	public String toString() {
 		
-		return null;
+		return "RentaFija{id=" + ID + ", monto=" + montoInvertido + ", plazo=" + plazoDias + ", tasa=" + tasaInteres + "}";
 	}
 }
