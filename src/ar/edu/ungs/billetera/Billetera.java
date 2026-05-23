@@ -1,5 +1,6 @@
 package ar.edu.ungs.billetera;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,12 @@ public class Billetera implements IBilletera {
 	private Map<String, Cuenta> todasLasCuentas;
 	private Map<String, Empresa> todasLasEmpresas;
 	private List<Actividad> historialGlobal;
+	
+	
+	public Billetera() {
+		
+		this.todosLosUsuarios = new HashMap<>();
+	}
 	
 	//AGREGA LA EMPRESA A MAP TODASLASEMPRESAS - Lanza error si la empresa ya esta registrada o algun campo es invalido.
 	@Override
@@ -27,7 +34,10 @@ public class Billetera implements IBilletera {
 	//AGREGA AL USUARIO A MAP TODOSLOSUSUARIOS - Lanza error si el usuario ya esta registrado o algun campo es invalido
 	@Override
 	public void registrarUsuario(String dni, String nombre, String telefono, String email) {
-		// TODO Auto-generated method stub
+		
+		Usuario usuario = new Usuario(dni,nombre,telefono,email);
+		
+		todosLosUsuarios.put(dni, usuario);
 		
 	}
 
