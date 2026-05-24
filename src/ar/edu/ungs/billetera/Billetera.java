@@ -170,8 +170,15 @@ public class Billetera implements IBilletera {
 	// esta registrado
 	@Override
 	public String consultarCvu(String alias) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		for (Cuenta cuenta : todasLasCuentas.values()) {
+			
+			if ((cuenta.getAlias().equals(alias))) {
+				return cuenta.getCVU();
+			}
+		}
+		
+		throw new IllegalArgumentException("Alias no se encuentra registrado");
 	}
 
 	// DEVUELVE LAS ACTIVIDADES DEL MAP HISTORIALGOBAL
