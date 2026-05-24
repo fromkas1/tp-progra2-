@@ -121,8 +121,18 @@ public class Billetera implements IBilletera {
 	// DEVUELVE EL SALDO DE UNA CUENTA - Lanza error si la cuenta no existe
 	@Override
 	public double obtenerSaldoDisponible(String cvu) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		Cuenta cuenta = todasLasCuentas.get(cvu);
+		
+		if (cuenta == null) {
+			throw new IllegalArgumentException("La cuenta no existe");
+		}
+		
+		double saldoDisponible = cuenta.obtenerSaldo();
+			
+			
+		
+		return saldoDisponible;
 	}
 
 	// REALIZA LA TRANSFERENCIA DE DINERO DE UNA CUENTA A LA OTRA - Lanza error si
