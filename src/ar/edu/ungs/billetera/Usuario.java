@@ -31,9 +31,9 @@ public class Usuario {
 			throw new IllegalArgumentException("telefono no puede ser null ni estar vacio");
 		}
 
-		if (email == null || telefono.isEmpty()) {
+		if (email == null || email.isEmpty()) {
 
-			throw new IllegalArgumentException("telefono no puede ser null ni estar vacio");
+			throw new IllegalArgumentException("email no puede ser null ni estar vacio");
 		}
 
 		this.DNI = DNI;
@@ -49,7 +49,7 @@ public class Usuario {
             throw new IllegalArgumentException("La cuenta no puede ser nula");
         }
         if (misCuentas.containsKey(nueva.alias)) {
-            throw new IllegalArgumentException("El alias ya está registrado para el usuario");
+            throw new IllegalArgumentException("El alias ya esta registrado para el usuario");
         }
         misCuentas.put(nueva.alias, nueva);
 

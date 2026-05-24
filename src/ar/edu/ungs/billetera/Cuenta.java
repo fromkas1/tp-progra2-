@@ -26,7 +26,11 @@ public abstract class Cuenta {
 		return this.CVU;
 	}
 	
-	public void obtenerSaldo() {
+	public String getAlias() {
+		return this.alias;
+	}
+	
+	public double obtenerSaldo() {
 		return saldo;
 		
 	}
@@ -65,6 +69,8 @@ public abstract class Cuenta {
 		
 		
 	}
+	
+	
 	
 	public abstract String toString();
 }

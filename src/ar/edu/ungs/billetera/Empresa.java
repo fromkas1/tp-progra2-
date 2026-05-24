@@ -17,7 +17,7 @@ public class Empresa {
 	        throw new IllegalArgumentException("Ningun dato de la empresa puede ser nulo.");
 	    }
 		
-		if(CUIT.length() != 11 || nombre.length() < 3 || telefono.length() != 10 || !email.contains("@") || nombreContacto.length() < 3) {
+		if(CUIT.length() != 13 || nombre.length() < 3 || telefono.length() < 10 || !email.contains("@") || nombreContacto.length() < 3) {
 			throw new IllegalArgumentException("Para crear una empresa: "
 					+ "\n - El CUIT debe tener 11 digitos."
 					+ "\n - El nombre debe tener mas de 2 letras."
