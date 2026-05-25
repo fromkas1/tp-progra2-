@@ -7,18 +7,22 @@ public class CuentaRegular extends Cuenta{
 		super(CVU, alias, DNIPropietario);
 	}
 	
-	public boolean puedeAcreditar(float monto) {
-		return monto < LIMITE_SALDO;
+	@Override
+	public boolean puedeAcreditar(double monto) {
+		return (this.saldo + monto) <= LIMITE_SALDO;
 	}
 	
-	public void debitar(float monto) {
-		
-		
+	@Override
+	public boolean puedeDebitar(double monto) {
+		return this.saldo >= monto;
 	}
 
 	@Override
 	public String toString() {
+		StringBuilder sb = new StringBuilder();
 		
-		return null;
+		sb.append("Regular: ").append(this.alias).append("(").append(this.CVU).append(")");
+		
+		return sb.toString();
 	}
 }
