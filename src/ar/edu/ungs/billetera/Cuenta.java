@@ -34,6 +34,24 @@ public abstract class Cuenta {
 		return saldo;
 	}
 	
+	public abstract boolean puedeAcreditar(double monto); //depende de las reglas del tipo de cuenta
+	
+	public abstract boolean puedeDebitar(double monto); //depende de las reglas del tipo de cuenta
+	
+	public void acreditar(double monto) {
+		if(!this.puedeAcreditar(monto)) {
+			throw new IllegalStateException("No se puede acreditar.");
+		}
+		this.saldo += monto;
+	}
+	
+	public void debitar(double monto) {
+		if(!this.puedeDebitar(monto)) {
+			throw new IllegalStateException("No se puede debitar.");
+		}
+		this.saldo -= monto;
+	}
+	
 	// Para la creacion de la cuenta Premium , inicializar saldo > Monto minimo
 	public double establecerSaldoInicial(double nuevoSaldo) {
 		this.saldo = nuevoSaldo;
@@ -50,8 +68,9 @@ public abstract class Cuenta {
 		if (this.saldo < monto) {
 			throw new IllegalStateException("Saldo insuficiente");
 		}
-		this.saldo -= monto;
-		destino.saldo += monto;
+		
+		this.debitar(monto);
+		destino.acreditar(monto);
 	}
 		
 	
@@ -63,10 +82,8 @@ public abstract class Cuenta {
 		if (monto <= 0) {
 			throw new IllegalArgumentException("Monto debe ser positivo");
 		}
-		if (saldo < monto) {
-			throw new IllegalStateException("Saldo insuficiente");
-		}
-		saldo -= monto;
+		
+		this.debitar(monto);
 		
 	}
  
@@ -78,4 +95,5 @@ public abstract class Cuenta {
 	
 	
 	public abstract String toString();
+	
 }
