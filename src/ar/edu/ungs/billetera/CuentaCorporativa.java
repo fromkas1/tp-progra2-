@@ -3,10 +3,13 @@ package ar.edu.ungs.billetera;
 public class CuentaCorporativa extends Cuenta{
 	private Empresa empresaPerteneciente;
 	
-	public CuentaCorporativa(String CVU, String alias, String DNIPropietario, Empresa empresa) {
-		super(CVU, alias, DNIPropietario);
+
+	
+	public CuentaCorporativa(String CVU, String alias,String dniAutorizado) {
+		super(CVU, alias,dniAutorizado);
 		
-		this.empresaPerteneciente = empresa;
+		
+
 	}
 	
 	@Override
