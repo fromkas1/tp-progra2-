@@ -39,6 +39,9 @@ public class Empresa {
 			throw new IllegalArgumentException("El DNI no puede ser nulo, vacio ni ser menor a 7 y mayor a 8");
 		}
 		
+		if(estaAutorizado(DNI)) {
+			throw new IllegalArgumentException("La persona con DNI:" + DNI +" no esta autorizado");
+		}
 		DNIAutorizados.add(DNI);
 	}
 	
@@ -48,10 +51,6 @@ public class Empresa {
 			throw new IllegalArgumentException("El DNI no puede ser nulo, vacio ni ser menor a 7 y mayor a 8");
 		}
 		
-		if(DNIAutorizados.contains(DNI)) {
-			return true;
-		}else {
-			return false;
-		}
+		return DNIAutorizados.contains(DNI);
 	}
 }

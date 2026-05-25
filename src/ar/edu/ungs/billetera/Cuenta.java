@@ -32,14 +32,11 @@ public abstract class Cuenta {
 	
 	public double obtenerSaldo() {
 		return saldo;
-		
 	}
 	
 	// Para la creacion de la cuenta Premium , inicializar saldo > Monto minimo
 	public double establecerSaldoInicial(double nuevoSaldo) {
-		
 		this.saldo = nuevoSaldo;
-		
 		return saldo;
 	}
  

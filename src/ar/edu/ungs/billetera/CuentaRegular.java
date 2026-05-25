@@ -25,6 +25,4 @@ public class CuentaRegular extends Cuenta{
 		
 		return sb.toString();
 	}
-
-
 }
