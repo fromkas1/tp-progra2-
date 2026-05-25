@@ -38,7 +38,18 @@ public class Billetera implements IBilletera {
 	// empresa no existe o la persona ya esta autorizada
 	@Override
 	public void agregarPersonaAutorizada(String cuitEmpresa, String dniAutorizado) {
-		// TODO Auto-generated method stub
+		
+		Empresa empresa = todasLasEmpresas.get(cuitEmpresa);
+		
+		if(empresa == null) {
+			throw new IllegalArgumentException("Empresa no existe");
+		}
+		
+		if (empresa.estaAutorizado(dniAutorizado)) {
+			throw new IllegalArgumentException("Dni ya esta autorizado");
+		}
+		
+		empresa.agregarAutorizado(dniAutorizado);
 
 	}
 
@@ -129,8 +140,43 @@ public class Billetera implements IBilletera {
 	// registrado o la empresa no existe
 	@Override
 	public String crearCuentaCorporativa(String dniUsuario, String alias, String cuitEmpresa) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Usuario usu = todosLosUsuarios.get(dniUsuario);
+		
+		if (usu == null) {
+			throw new IllegalArgumentException("No existe usuario con DNI: "+ dniUsuario);
+		}
+		
+		
+		for (Cuenta cuentaActual : todasLasCuentas.values() ) {
+			
+			if(cuentaActual.getAlias().equals(alias)) {
+				
+				throw new IllegalArgumentException("Alias ya esta registrado : "+alias);
+			}
+			
+		}
+		
+		Empresa empresa = todasLasEmpresas.get(cuitEmpresa);
+		
+		if (empresa == null) {
+			throw new IllegalArgumentException("No existe empresa con este Cuit: "+ cuitEmpresa);
+		}
+		
+		if(!empresa.estaAutorizado(dniUsuario)) {
+			throw new IllegalArgumentException("Dni no autorizado para operar por la empresa");
+		}
+		
+		String CVU = generarCVU();
+		
+		Cuenta cuentaCorporativa = new CuentaCorporativa(CVU, alias, dniUsuario);
+		
+		//se agrega en la lista de cuentas en Usuario
+		usu.agregarCuenta(cuentaCorporativa);
+		
+		todasLasCuentas.put(CVU, cuentaCorporativa);
+				
+		return CVU;
 	}
 
 	// DEVUELVE TODAS LAS CUENTAS DEL USUARIO EXISTENTE CON LOS DATOS
