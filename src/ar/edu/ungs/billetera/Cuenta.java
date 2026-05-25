@@ -34,6 +34,14 @@ public abstract class Cuenta {
 		return saldo;
 		
 	}
+	
+	// Para la creacion de la cuenta Premium , inicializar saldo > Monto minimo
+	public double establecerSaldoInicial(double nuevoSaldo) {
+		
+		this.saldo = nuevoSaldo;
+		
+		return saldo;
+	}
  
 	public void transferir(Cuenta destino, double monto) {
 		if (destino == null) {

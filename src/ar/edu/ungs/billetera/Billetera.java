@@ -96,8 +96,32 @@ public class Billetera implements IBilletera {
 	// registrado
 	@Override
 	public String crearCuentaPremium(String dniUsuario, String alias, double depositoInicial) {
-		// TODO Auto-generated method stub
-		return null;
+		Usuario usu = todosLosUsuarios.get(dniUsuario);
+		
+		if (usu == null) {
+			throw new IllegalArgumentException("No existe usuario con DNI: "+ dniUsuario);
+		}
+		
+		
+		for (Cuenta cuentaActual : todasLasCuentas.values() ) {
+			
+			if(cuentaActual.getAlias().equals(alias)) {
+				
+				throw new IllegalArgumentException("Alias ya esta registrado : "+alias);
+			}
+			
+		}
+		
+		String CVU = generarCVU();
+		
+		Cuenta cuentaPremium = new CuentaPremium(depositoInicial,CVU, alias, dniUsuario);
+		
+		//se agrega en la lista de cuentas en Usuario
+		usu.agregarCuenta(cuentaPremium);
+		
+		todasLasCuentas.put(CVU, cuentaPremium);
+				
+		return CVU;
 	}
 
 	// AGREGA LA CUENTA A TODASLASCUENTAS DE UN USUARIO EXISTENTE Y RETORNA EL CVU
