@@ -34,6 +34,10 @@ public abstract class Cuenta {
 		return saldo;
 	}
 	
+	public List<Actividad> getHistorial() {
+		return historial;
+	}
+
 	public abstract boolean puedeAcreditar(double monto); //depende de las reglas del tipo de cuenta
 	
 	public abstract boolean puedeDebitar(double monto); //depende de las reglas del tipo de cuenta
@@ -86,7 +90,13 @@ public abstract class Cuenta {
 		this.debitar(monto);
 		
 	}
- 
+	
+	
+	public void agregarMovimiento(Transferencia nuevaTransferencia) {
+		
+		this.historial.add(nuevaTransferencia);
+	}
+	
 	public void consultarMovimientos() {
 		
 		

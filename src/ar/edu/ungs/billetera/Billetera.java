@@ -1,5 +1,6 @@
 package ar.edu.ungs.billetera;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,12 +12,16 @@ public class Billetera implements IBilletera {
 	private Map<String, Cuenta> todasLasCuentas;
 	private Map<String, Empresa> todasLasEmpresas;
 	private List<Actividad> historialGlobal;
-
+	private Transferencia transferencia;
+	private Actividad actividad;
+	
+	
 	public Billetera() {
 
 		this.todosLosUsuarios = new HashMap<>();
 		this.todasLasCuentas = new HashMap<>();
 		this.todasLasEmpresas = new HashMap<>();
+		
 	}
 
 	// AGREGA LA EMPRESA A MAP TODASLASEMPRESAS - Lanza error si la empresa ya esta
@@ -230,6 +235,16 @@ public class Billetera implements IBilletera {
 		
 		cuentaCVUOrigen.transferir(cuentaCVUDestino, monto);
 		
+		// Ver donde generar el numero de operacion 
+		Transferencia comprobante = new Transferencia("1", monto, cuentaCVUDestino, cuentaCVUDestino);
+		
+		cuentaCVUOrigen.agregarMovimiento(comprobante);
+		
+		cuentaCVUDestino.agregarMovimiento(comprobante);
+		
+		
+		
+		
 		// Falta agregar transferencia en historial cuenta 
 		
 	}
@@ -299,8 +314,23 @@ public class Billetera implements IBilletera {
 	// ANTERIOR - Lanza error si la cuenta no existe
 	@Override
 	public List<String> consultarHistorialCuenta(String cvu) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<String> historialCuenta = new ArrayList();
+		
+		Cuenta cuenta = todasLasCuentas.get(cvu);
+		
+		if(cuenta == null) {
+			throw new IllegalArgumentException("Cuenta no existe");
+		}
+		
+		List <Actividad> actividadCuenta = cuenta.getHistorial();
+		
+		for(Actividad actividad : actividadCuenta ) {
+			
+			historialCuenta.add(actividad.toString());
+		}
+		
+		return historialCuenta;
 	}
 
 	// DEVUELVE EL HISTORIAL DE TODAS LAS ACTIVIDADES DE TODAS LAS CUENTAS DEL
