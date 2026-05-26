@@ -9,6 +9,9 @@ public abstract class Actividad {
 	protected double monto;
 	
 	public Actividad(double monto) {
+		if(monto <= 0 || monto.length() == null){
+			throw new IllegalArgumentException("El monto debe ser mayor a 0 y no nulo.");
+		
 		this.fecha = Utilitarios.hoy();
 		this.monto = monto;
 		this.numeroOperacion = "Operacion N°" + contadorActividades;
