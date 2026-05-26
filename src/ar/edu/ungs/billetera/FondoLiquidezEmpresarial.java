@@ -6,16 +6,21 @@ public class FondoLiquidezEmpresarial extends Inversion{
 
 	 public FondoLiquidezEmpresarial(int ID, int plazoDias, double montoInvertido){
 		 super(ID, plazoDias, montoInvertido);
+		 
+		 //IREP
+		 if (montoInvertido < MONTO_MINIMO) {
+				throw new IllegalArgumentException("El monto minimo para el Fondo de Liquidez es de $" + MONTO_MINIMO);
+			}
 	}
 	 
 	 public double calcularResultado(Cuenta cuenta) {
+		 this.estadoActivo = false;
 		 
-		 return 0;
+		 return montoInvertido + (montoInvertido * TASAFLE * plazoDias) / 365.0;
 	 }
 
 	 @Override
 	 public String toString() {
-		 
-		return null;
+		 return "Fondo Liquidez Empresarial {id=" + ID + ", monto=" + montoInvertido + ", plazo=" + plazoDias + ", tasa FLE=" + TASAFLE + "}";
 	 }
 }

@@ -28,10 +28,11 @@ public class VinculadaaDivisa extends Inversion implements Precancelable{
 	}
 	
 	public double calcularResultado(Cuenta cuenta) {
+		this.estadoActivo = false;
+		
 		double divisasEquivalente = montoInvertido / cotizacionInicial;
 		return (divisasEquivalente + divisasEquivalente * tasaInteresDivisa * plazoDias / 365.0)
 			* Utilitarios.consultarCotizacion(divisaRefencia);
-		
 	}
 
 	@Override
