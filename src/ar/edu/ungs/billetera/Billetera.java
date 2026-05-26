@@ -253,8 +253,35 @@ public class Billetera implements IBilletera {
 	// usuario o la cuenta no existe, o si algun dato es invalido
 	@Override
 	public int realizarInversionRentaFija(String dni, String cvu, double monto, int plazoDias) {
-		// TODO Auto-generated method stub
-		return 0;
+		Usuario usuario = todosLosUsuarios.get(dni);
+		Cuenta cuenta = todasLasCuentas.get(cvu);
+		
+		if (usuario == null) {
+			throw new IllegalArgumentException("Usuario no existe");
+		}
+		
+		if (cuenta == null) {
+			throw new IllegalArgumentException("Cuenta no existe");
+		}
+		
+		if (monto <= 0) {
+			throw new IllegalArgumentException("Monto debe ser positivo");
+		}
+		
+		if (plazoDias <= 0) {
+			throw new IllegalArgumentException("Plazo debe ser mayor a 0 días");
+		}
+		
+		int idInversion = generarIDInversion();
+		double tasaInteres = 0.05;
+		
+		Inversion rentaFija = new RentaFija(idInversion, plazoDias, monto, tasaInteres);
+		cuenta.invertir(rentaFija, monto);
+		todasLasInversiones.put(idInversion, rentaFija);
+		usuario.actualizarTotalInvertido(monto);
+		
+		return idInversion;
+	
 	}
 
 	// HACE UNA INVERSION DE TIPO RENTAFIJA Y RETORNA EL ID - Lanza error si el
@@ -262,16 +289,76 @@ public class Billetera implements IBilletera {
 	@Override
 	public int realizarInversionDivisa(String dni, String cvu, double monto, int plazoDias, String divisa,
 			double tasa) {
-		// TODO Auto-generated method stub
-		return 0;
+		Usuario usuario = todosLosUsuarios.get(dni);
+		Cuenta cuenta = todasLasCuentas.get(cvu);
+		
+		if (usuario == null) {
+			throw new IllegalArgumentException("Usuario no existe");
+		}
+		
+		if (cuenta == null) {
+			throw new IllegalArgumentException("Cuenta no existe");
+		}
+		
+		if (monto <= 0) {
+			throw new IllegalArgumentException("Monto debe ser positivo");
+		}
+		
+		if (plazoDias <= 0) {
+			throw new IllegalArgumentException("Plazo debe ser mayor a 0 días");
+		}
+		
+		if (divisa == null || divisa.isEmpty()) {
+			throw new IllegalArgumentException("Divisa no puede ser nula ni vacía");
+		}
+		
+		if (tasa <= 0) {
+			throw new IllegalArgumentException("Tasa debe ser positiva");
+		}
+		
+		int idInversion = generarIDInversion();
+		
+		Inversion vinculadaDivisa = new VinculadaaDivisa(idInversion, plazoDias, monto, divisa, tasa);
+		cuenta.invertir(vinculadaDivisa, monto);
+		todasLasInversiones.put(idInversion, vinculadaDivisa);
+		usuario.actualizarTotalInvertido(monto);
+		
+		return idInversion;
 	}
 
 	// HACE UNA INVERSION DE TIPO RENTAFIJA Y RETORNA EL ID - Lanza error si el
 	// usuario o la cuenta no existe, o si algun dato es invalido
 	@Override
 	public int realizarInversionLiquidez(String dni, String cvu, double monto, int plazoDias) {
-		// TODO Auto-generated method stub
-		return 0;
+		Usuario usuario = todosLosUsuarios.get(dni);
+		Cuenta cuenta = todasLasCuentas.get(cvu);
+
+		if (usuario == null) {
+			throw new IllegalArgumentException("Usuario no existe");
+		}
+	
+
+		if (cuenta == null) {
+			throw new IllegalArgumentException("Cuenta no existe");
+		}
+
+
+		if (monto <= 0) {
+			throw new IllegalArgumentException("Monto debe ser positivo");
+		}
+
+		if (plazoDias <= 0) {
+			throw new IllegalArgumentException("Plazo debe ser mayor a 0 días");
+		}
+
+		int idInversion = generarIDInversion();
+		Inversion vinculadaLiquidez = new FondoLiquidezEmpresarial(idInversion, plazoDias, monto);
+
+		cuenta.invertir(vinculadaLiquidez, monto);
+		todasLasInversiones.put(idInversion, vinculadaLiquidez);
+		usuario.actualizarTotalInvertido(monto);
+
+		return idInversion;
 	}
 
 	// PRECANCELA UNA INVERSION EN ESTADO ACTIVA - Lanza error si algun dato es
@@ -355,6 +442,11 @@ public class Billetera implements IBilletera {
 	public List<String> cuentasConMayorVolumen(int cantidadTop) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private int generarIDInversion() {
+		Random random = new Random();
+		return random.nextInt(100000) + 1; // Genera un ID entre 1 y 100000
 	}
 
 	
