@@ -236,7 +236,7 @@ public class Billetera implements IBilletera {
 		cuentaCVUOrigen.transferir(cuentaCVUDestino, monto);
 		
 		// Ver donde generar el numero de operacion 
-		Transferencia comprobante = new Transferencia("1", monto, cuentaCVUDestino, cuentaCVUDestino);
+		Transferencia comprobante = new Transferencia(monto, cuentaCVUDestino, cuentaCVUDestino);
 		
 		cuentaCVUOrigen.agregarMovimiento(comprobante);
 		
@@ -424,8 +424,20 @@ public class Billetera implements IBilletera {
 	// USUARIO CON EL MISMO FORMATO ANTERIOR - Lanza error si el usuario no existe
 	@Override
 	public List<String> consultarHistorialUsuario(String dniUsuario) {
-		// TODO Auto-generated method stub
-		return null;
+		List <String> historialUsuario = new LinkedList<>();
+
+        Usuario usuario = todosLosUsuarios.get(dniUsuario);
+
+        for (Cuenta cuentasUsuario : usuario.getMisCuentas().values() ) {
+
+            for (Actividad cuentas : cuentasUsuario.getHistorial() ) {
+
+                historialUsuario.add(cuentas.toString());
+
+            }
+        }
+
+        return historialUsuario;
 	}
 
 	// DEVUELVE EL TOTAL DE TODAS LAS INVERSIONES QUE TIENE UN USUARIO EN SUS
