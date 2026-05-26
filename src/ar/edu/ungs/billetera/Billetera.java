@@ -223,8 +223,15 @@ public class Billetera implements IBilletera {
 	// alguna de las cuentas no existe
 	@Override
 	public void realizarTransferencia(String cvuOrigen, String cvuDestino, double monto) {
-		// TODO Auto-generated method stub
-
+		
+		Cuenta cuentaCVUOrigen = todasLasCuentas.get(cvuOrigen);
+		
+		Cuenta cuentaCVUDestino = todasLasCuentas.get(cvuDestino);
+		
+		cuentaCVUOrigen.transferir(cuentaCVUDestino, monto);
+		
+		// Falta agregar transferencia en historial cuenta 
+		
 	}
 
 	// HACE UNA INVERSION DE TIPO RENTAFIJA Y RETORNA EL ID - Lanza error si el
