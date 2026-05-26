@@ -11,6 +11,18 @@ public abstract class Cuenta {
 	protected List <Actividad> historial;
  
 	public Cuenta(String CVU, String alias, String DNIPropietario) {
+		// IREP
+		if (CVU == null || alias == null || DNIPropietario == null) {
+	        throw new IllegalArgumentException("Ningun dato de la empresa puede ser nulo.");
+	    }
+		
+		if(CVU.length() != 22 || alias.length() < 5 || DNIPropietario.length() < 9 || DNIPropietario.length() > 6) {
+			throw new IllegalArgumentException("Para crear una empresa: "
+					+ "\n - El CVU debe tener 22 digitos."
+					+ "\n - El alias debe tener mas de 5 letras."
+					+ "\n - El DNI debe ser valido.");
+		}
+		
 		this.CVU = CVU;
 		this.alias = alias;
 		this.DNIPropietario = DNIPropietario;
@@ -56,7 +68,7 @@ public abstract class Cuenta {
 		this.saldo -= monto;
 	}
 	
-	// Para la creacion de la cuenta Premium , inicializar saldo > Monto minimo
+	// Para la creacion de la cuenta Premium, inicializar saldo > Monto minimo
 	public double establecerSaldoInicial(double nuevoSaldo) {
 		this.saldo = nuevoSaldo;
 		return saldo;
@@ -88,12 +100,10 @@ public abstract class Cuenta {
 		}
 		
 		this.debitar(monto);
-		
 	}
 	
 	
 	public void agregarMovimiento(Transferencia nuevaTransferencia) {
-		
 		this.historial.add(nuevaTransferencia);
 	}
 	
