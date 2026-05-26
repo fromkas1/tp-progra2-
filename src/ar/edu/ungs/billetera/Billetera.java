@@ -1,6 +1,7 @@
 package ar.edu.ungs.billetera;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -90,7 +91,7 @@ public class Billetera implements IBilletera {
 			
 		}
 		
-		String CVU = generarCVU();
+		String CVU = Utilitarios.generarSiguienteCvu();
 		
 		Cuenta cuentaRegular = new CuentaRegular(CVU, alias, dniUsuario);
 		
@@ -123,7 +124,7 @@ public class Billetera implements IBilletera {
 			
 		}
 		
-		String CVU = generarCVU();
+		String CVU = Utilitarios.generarSiguienteCvu();
 		
 		Cuenta cuentaPremium = new CuentaPremium(depositoInicial,CVU, alias, dniUsuario);
 		
@@ -167,7 +168,7 @@ public class Billetera implements IBilletera {
 			throw new IllegalArgumentException("Dni no autorizado para operar por la empresa");
 		}
 		
-		String CVU = generarCVU();
+		String CVU = Utilitarios.generarSiguienteCvu();
 		
 		Cuenta cuentaCorporativa = new CuentaCorporativa(CVU, alias, dniUsuario);
 		
@@ -184,8 +185,21 @@ public class Billetera implements IBilletera {
 	// existe
 	@Override
 	public List<String> obtenerCuentas(String dniUsuario) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List <String> listaDeDatos = new LinkedList<>();
+		
+		Usuario usu = todosLosUsuarios.get(dniUsuario);
+		
+		if (usu == null) {
+			throw new IllegalArgumentException("No existe usuario con DNI: "+ dniUsuario);
+		}
+		
+		for (Cuenta cuentaActual : usu.getMisCuentas().values() ) {
+			
+			listaDeDatos.add(cuentaActual.toString());
+			
+		}
+		return listaDeDatos;
 	}
 
 	// DEVUELVE EL SALDO DE UNA CUENTA - Lanza error si la cuenta no existe
@@ -306,22 +320,6 @@ public class Billetera implements IBilletera {
 		return null;
 	}
 
-	private String generarCVU() {
-		
-		Random random = new Random();
-		
-		StringBuilder sb = new StringBuilder(22);
-		
-		// Primeros 6 digitos 000000
-		sb.append("000000");
-		
-		// Resto numeros aletorios
-		for (int i=0; i<16 ;i++) {
-			
-			sb.append(random.nextInt(10));
-		}
-		
-		return sb.toString();
-	}
+	
 
 }

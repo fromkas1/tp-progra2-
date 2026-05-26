@@ -14,7 +14,7 @@ public class CuentaCorporativa extends Cuenta{
 	
 	@Override
 	public boolean puedeAcreditar(double monto) {
-		return monto > 0 
+		return monto > 0 ;
 	}
 	
 	@Override

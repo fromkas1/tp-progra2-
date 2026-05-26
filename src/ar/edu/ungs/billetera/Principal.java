@@ -63,7 +63,9 @@ public class Principal {
         System.out.println("  Consultando CVU por alias 'ana.regular'...");
         String cvuConsultado = billetera.consultarCvu("ana.regular");
         System.out.println("  CVU Obtenido por alias: " + cvuConsultado + "\n");
-
+        
+        
+        
         // 3. Realizar transferencias
         System.out.println("[3] Realizando transferencias...");
         System.out.println("  Carlos transfiere $200.000 a Ana...");
@@ -140,5 +142,7 @@ public class Principal {
         System.out.println("=================================================");
         System.out.println("      SIMULACIÓN COMPLETADA EXITOSAMENTE         ");
         System.out.println("=================================================");
+        
+        
     }
 }
