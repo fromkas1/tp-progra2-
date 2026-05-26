@@ -1,6 +1,8 @@
 package ar.edu.ungs.billetera;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -10,12 +12,16 @@ public class Billetera implements IBilletera {
 	private Map<String, Cuenta> todasLasCuentas;
 	private Map<String, Empresa> todasLasEmpresas;
 	private List<Actividad> historialGlobal;
-
+	private Transferencia transferencia;
+	private Actividad actividad;
+	
+	
 	public Billetera() {
 
 		this.todosLosUsuarios = new HashMap<>();
 		this.todasLasCuentas = new HashMap<>();
 		this.todasLasEmpresas = new HashMap<>();
+		
 	}
 
 	// AGREGA LA EMPRESA A MAP TODASLASEMPRESAS - Lanza error si la empresa ya esta
@@ -90,7 +96,7 @@ public class Billetera implements IBilletera {
 			
 		}
 		
-		String CVU = generarCVU();
+		String CVU = Utilitarios.generarSiguienteCvu();
 		
 		Cuenta cuentaRegular = new CuentaRegular(CVU, alias, dniUsuario);
 		
@@ -123,7 +129,7 @@ public class Billetera implements IBilletera {
 			
 		}
 		
-		String CVU = generarCVU();
+		String CVU = Utilitarios.generarSiguienteCvu();
 		
 		Cuenta cuentaPremium = new CuentaPremium(depositoInicial,CVU, alias, dniUsuario);
 		
@@ -167,7 +173,7 @@ public class Billetera implements IBilletera {
 			throw new IllegalArgumentException("Dni no autorizado para operar por la empresa");
 		}
 		
-		String CVU = generarCVU();
+		String CVU = Utilitarios.generarSiguienteCvu();
 		
 		Cuenta cuentaCorporativa = new CuentaCorporativa(CVU, alias, dniUsuario);
 		
@@ -184,8 +190,21 @@ public class Billetera implements IBilletera {
 	// existe
 	@Override
 	public List<String> obtenerCuentas(String dniUsuario) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List <String> listaDeDatos = new LinkedList<>();
+		
+		Usuario usu = todosLosUsuarios.get(dniUsuario);
+		
+		if (usu == null) {
+			throw new IllegalArgumentException("No existe usuario con DNI: "+ dniUsuario);
+		}
+		
+		for (Cuenta cuentaActual : usu.getMisCuentas().values() ) {
+			
+			listaDeDatos.add(cuentaActual.toString());
+			
+		}
+		return listaDeDatos;
 	}
 
 	// DEVUELVE EL SALDO DE UNA CUENTA - Lanza error si la cuenta no existe
@@ -209,16 +228,60 @@ public class Billetera implements IBilletera {
 	// alguna de las cuentas no existe
 	@Override
 	public void realizarTransferencia(String cvuOrigen, String cvuDestino, double monto) {
-		// TODO Auto-generated method stub
-
+		
+		Cuenta cuentaCVUOrigen = todasLasCuentas.get(cvuOrigen);
+		
+		Cuenta cuentaCVUDestino = todasLasCuentas.get(cvuDestino);
+		
+		cuentaCVUOrigen.transferir(cuentaCVUDestino, monto);
+		
+		// Ver donde generar el numero de operacion 
+		Transferencia comprobante = new Transferencia("1", monto, cuentaCVUDestino, cuentaCVUDestino);
+		
+		cuentaCVUOrigen.agregarMovimiento(comprobante);
+		
+		cuentaCVUDestino.agregarMovimiento(comprobante);
+		
+		
+		
+		
+		// Falta agregar transferencia en historial cuenta 
+		
 	}
 
 	// HACE UNA INVERSION DE TIPO RENTAFIJA Y RETORNA EL ID - Lanza error si el
 	// usuario o la cuenta no existe, o si algun dato es invalido
 	@Override
 	public int realizarInversionRentaFija(String dni, String cvu, double monto, int plazoDias) {
-		// TODO Auto-generated method stub
-		return 0;
+		Usuario usuario = todosLosUsuarios.get(dni);
+		Cuenta cuenta = todasLasCuentas.get(cvu);
+		
+		if (usuario == null) {
+			throw new IllegalArgumentException("Usuario no existe");
+		}
+		
+		if (cuenta == null) {
+			throw new IllegalArgumentException("Cuenta no existe");
+		}
+		
+		if (monto <= 0) {
+			throw new IllegalArgumentException("Monto debe ser positivo");
+		}
+		
+		if (plazoDias <= 0) {
+			throw new IllegalArgumentException("Plazo debe ser mayor a 0 días");
+		}
+		
+		int idInversion = generarIDInversion();
+		double tasaInteres = 0.05;
+		
+		Inversion rentaFija = new RentaFija(idInversion, plazoDias, monto, tasaInteres);
+		cuenta.invertir(rentaFija, monto);
+		todasLasInversiones.put(idInversion, rentaFija);
+		usuario.actualizarTotalInvertido(monto);
+		
+		return idInversion;
+	
 	}
 
 	// HACE UNA INVERSION DE TIPO RENTAFIJA Y RETORNA EL ID - Lanza error si el
@@ -226,16 +289,76 @@ public class Billetera implements IBilletera {
 	@Override
 	public int realizarInversionDivisa(String dni, String cvu, double monto, int plazoDias, String divisa,
 			double tasa) {
-		// TODO Auto-generated method stub
-		return 0;
+		Usuario usuario = todosLosUsuarios.get(dni);
+		Cuenta cuenta = todasLasCuentas.get(cvu);
+		
+		if (usuario == null) {
+			throw new IllegalArgumentException("Usuario no existe");
+		}
+		
+		if (cuenta == null) {
+			throw new IllegalArgumentException("Cuenta no existe");
+		}
+		
+		if (monto <= 0) {
+			throw new IllegalArgumentException("Monto debe ser positivo");
+		}
+		
+		if (plazoDias <= 0) {
+			throw new IllegalArgumentException("Plazo debe ser mayor a 0 días");
+		}
+		
+		if (divisa == null || divisa.isEmpty()) {
+			throw new IllegalArgumentException("Divisa no puede ser nula ni vacía");
+		}
+		
+		if (tasa <= 0) {
+			throw new IllegalArgumentException("Tasa debe ser positiva");
+		}
+		
+		int idInversion = generarIDInversion();
+		
+		Inversion vinculadaDivisa = new VinculadaaDivisa(idInversion, plazoDias, monto, divisa, tasa);
+		cuenta.invertir(vinculadaDivisa, monto);
+		todasLasInversiones.put(idInversion, vinculadaDivisa);
+		usuario.actualizarTotalInvertido(monto);
+		
+		return idInversion;
 	}
 
 	// HACE UNA INVERSION DE TIPO RENTAFIJA Y RETORNA EL ID - Lanza error si el
 	// usuario o la cuenta no existe, o si algun dato es invalido
 	@Override
 	public int realizarInversionLiquidez(String dni, String cvu, double monto, int plazoDias) {
-		// TODO Auto-generated method stub
-		return 0;
+		Usuario usuario = todosLosUsuarios.get(dni);
+		Cuenta cuenta = todasLasCuentas.get(cvu);
+
+		if (usuario == null) {
+			throw new IllegalArgumentException("Usuario no existe");
+		}
+	
+
+		if (cuenta == null) {
+			throw new IllegalArgumentException("Cuenta no existe");
+		}
+
+
+		if (monto <= 0) {
+			throw new IllegalArgumentException("Monto debe ser positivo");
+		}
+
+		if (plazoDias <= 0) {
+			throw new IllegalArgumentException("Plazo debe ser mayor a 0 días");
+		}
+
+		int idInversion = generarIDInversion();
+		Inversion vinculadaLiquidez = new FondoLiquidezEmpresarial(idInversion, plazoDias, monto);
+
+		cuenta.invertir(vinculadaLiquidez, monto);
+		todasLasInversiones.put(idInversion, vinculadaLiquidez);
+		usuario.actualizarTotalInvertido(monto);
+
+		return idInversion;
 	}
 
 	// PRECANCELA UNA INVERSION EN ESTADO ACTIVA - Lanza error si algun dato es
@@ -278,8 +401,23 @@ public class Billetera implements IBilletera {
 	// ANTERIOR - Lanza error si la cuenta no existe
 	@Override
 	public List<String> consultarHistorialCuenta(String cvu) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<String> historialCuenta = new ArrayList();
+		
+		Cuenta cuenta = todasLasCuentas.get(cvu);
+		
+		if(cuenta == null) {
+			throw new IllegalArgumentException("Cuenta no existe");
+		}
+		
+		List <Actividad> actividadCuenta = cuenta.getHistorial();
+		
+		for(Actividad actividad : actividadCuenta ) {
+			
+			historialCuenta.add(actividad.toString());
+		}
+		
+		return historialCuenta;
 	}
 
 	// DEVUELVE EL HISTORIAL DE TODAS LAS ACTIVIDADES DE TODAS LAS CUENTAS DEL
@@ -306,22 +444,11 @@ public class Billetera implements IBilletera {
 		return null;
 	}
 
-	private String generarCVU() {
-		
+	private int generarIDInversion() {
 		Random random = new Random();
-		
-		StringBuilder sb = new StringBuilder(22);
-		
-		// Primeros 6 digitos 000000
-		sb.append("000000");
-		
-		// Resto numeros aletorios
-		for (int i=0; i<16 ;i++) {
-			
-			sb.append(random.nextInt(10));
-		}
-		
-		return sb.toString();
+		return random.nextInt(100000) + 1; // Genera un ID entre 1 y 100000
 	}
+
+	
 
 }

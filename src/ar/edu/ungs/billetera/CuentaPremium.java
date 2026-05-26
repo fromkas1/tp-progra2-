@@ -15,7 +15,7 @@ public class CuentaPremium extends Cuenta{
 
 	@Override
 	public boolean puedeAcreditar(double monto) {
-		return true;
+		return monto > 0;
 	}
 
 	@Override

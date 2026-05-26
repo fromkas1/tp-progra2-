@@ -63,14 +63,18 @@ public class Principal {
         System.out.println("  Consultando CVU por alias 'ana.regular'...");
         String cvuConsultado = billetera.consultarCvu("ana.regular");
         System.out.println("  CVU Obtenido por alias: " + cvuConsultado + "\n");
-
+        
+        
+        
         // 3. Realizar transferencias
         System.out.println("[3] Realizando transferencias...");
         System.out.println("  Carlos transfiere $200.000 a Ana...");
         billetera.realizarTransferencia(cvuCarlosPremium, cvuAnaRegular, 200000);
         System.out.println("  Saldo Disponible Carlos: $" + billetera.obtenerSaldoDisponible(cvuCarlosPremium));
         System.out.println("  Saldo Disponible Ana: $" + billetera.obtenerSaldoDisponible(cvuAnaRegular) + "\n");
-
+        
+        System.out.println(billetera.consultarHistorialCuenta(cvuAnaRegular));
+        
         // 4. Inversiones
         System.out.println("[4] Realizando inversiones...");
         System.out.println("  Carlos invierte $500.000 en Renta Fija a 30 días...");
@@ -140,5 +144,7 @@ public class Principal {
         System.out.println("=================================================");
         System.out.println("      SIMULACIÓN COMPLETADA EXITOSAMENTE         ");
         System.out.println("=================================================");
+        
+        
     }
 }

@@ -71,6 +71,10 @@ public class Usuario {
 	public void consultarMovimientos() {
 
 	}
+	
+	public Map<String, Cuenta> getMisCuentas() {
+		return misCuentas;
+	}
 
 	public String toString() {
 

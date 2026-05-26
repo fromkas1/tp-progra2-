@@ -4,8 +4,8 @@ public class OperacionInversion extends Actividad{
 	private Inversion inversion;
 	private Cuenta origen;
 	
-	public OperacionInversion(String numeroOperacion, double monto, Inversion inversion, Cuenta origen) {
-		super(numeroOperacion, monto);
+	public OperacionInversion(double monto, Inversion inversion, Cuenta origen) {
+		super(monto);
 		this.inversion = inversion;
 		this.origen = origen;
 	}
@@ -21,7 +21,7 @@ public class OperacionInversion extends Actividad{
 		sb.append("\t desc: [").append(this.inversion.getClass()).append("] \n");
 		sb.append("\t monto: [").append(this.monto).append("] \n");
 		sb.append("\t plazo: [").append(this.inversion.getPlazoDias()).append("] \n");
-		sb.append("\t Aprobado");
+		sb.append("\t [Aprobado]");
 		
 		return sb.toString();
 	}
