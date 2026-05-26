@@ -11,6 +11,7 @@ public abstract class Cuenta {
 	protected List <Actividad> historial;
  
 	public Cuenta(String CVU, String alias, String DNIPropietario) {
+		
 		this.CVU = CVU;
 		this.alias = alias;
 		this.DNIPropietario = DNIPropietario;
