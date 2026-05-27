@@ -74,6 +74,21 @@ public class Usuario {
 	
 
 	public void consultarMovimientos() {
+		if (misCuentas == null || misCuentas.isEmpty()) {
+			System.out.println("El usuario no tiene cuentas registradas.");
+			return;
+		}
+
+		for (Cuenta cuenta : misCuentas.values()) {
+			System.out.println("Cuenta: " + cuenta.getAlias() + " (" + cuenta.getCVU() + ")");
+			if (cuenta.getHistorial().isEmpty()) {
+				System.out.println("  No hay movimientos registrados para esta cuenta.");
+				continue;
+			}
+			for (Actividad actividad : cuenta.getHistorial()) {
+				System.out.println("  " + actividad.toString());
+			}
+		}
 
 	}
 	
