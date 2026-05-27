@@ -2,7 +2,7 @@ package ar.edu.ungs.billetera;
 
 import java.time.temporal.ChronoUnit;
 
-public class RentaFija extends Inversion implements Precancelable{
+public class RentaFija extends Inversion {
 	private double tasaInteres;
 	
 	public RentaFija(int ID, int plazoDias, double montoInvertido, double tasaInteres) {

@@ -26,10 +26,20 @@ public abstract class Inversion {
 		
 		
 	} 
+	
+	public boolean estaActivo() {
+		return estadoActivo;
+	}
+
+	public int getID() {
+		return ID;
+	}
 
 	public int getPlazoDias() { //lo usamos para el toString de OperacionInversion
 		return this.plazoDias;
 	}
+	
+	
 	
 	public abstract double calcularResultado(Cuenta cuentaAsociada);
 	

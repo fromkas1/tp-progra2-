@@ -10,6 +10,11 @@ public class OperacionInversion extends Actividad{
 		this.origen = origen;
 	}
 	
+	
+	public Inversion getInversion() {
+		return inversion;
+	}
+
 	@Override
 	public String toString() {
 		//usamos el formato que nos pide en la segunda parte

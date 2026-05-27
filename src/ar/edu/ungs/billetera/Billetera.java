@@ -283,6 +283,8 @@ public class Billetera implements IBilletera {
 		
 		usuario.actualizarTotalInvertido(monto);
 		
+		historialGlobal.add(comprobante);
+		
 		return idInversion;
 		
 	}
@@ -317,6 +319,8 @@ public class Billetera implements IBilletera {
 		
 		usuario.actualizarTotalInvertido(monto);
 		
+		historialGlobal.add(comprobante);
+		
 		return idInversion;
 	}
 
@@ -349,6 +353,8 @@ public class Billetera implements IBilletera {
 		cuenta.agregarMovimiento(comprobante);
 		
 		usuario.actualizarTotalInvertido(monto);
+		
+		historialGlobal.add(comprobante);
 
 		return idInversion;
 	}
@@ -357,7 +363,21 @@ public class Billetera implements IBilletera {
 	// invalido, la inversion no existe o no esta activa
 	@Override
 	public void precancelarInversion(String dni, String cvu, int idInversion) {
-		// TODO Auto-generated method stub
+		
+		Usuario usuario = todosLosUsuarios.get(dni);
+		Cuenta cuenta = todasLasCuentas.get(cvu);
+
+		if (usuario == null) {
+			throw new IllegalArgumentException("Usuario no existe");
+		}
+	
+
+		if (cuenta == null) {
+			throw new IllegalArgumentException("Cuenta no existe");
+		}
+		
+		
+		cuenta.precancerlarInversion(idInversion);
 
 	}
 
