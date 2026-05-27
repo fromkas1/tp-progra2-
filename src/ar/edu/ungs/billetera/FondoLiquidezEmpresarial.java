@@ -14,6 +14,12 @@ public class FondoLiquidezEmpresarial extends Inversion{
 	}
 	 
 	 public double calcularResultado(Cuenta cuenta) {
+		 if (cuenta == null) {
+			 throw new IllegalArgumentException("Cuenta asociada no puede ser nula");
+		 }
+		 if (!(cuenta instanceof CuentaCorporativa)) {
+			 throw new IllegalArgumentException("Solo cuentas corporativas pueden invertir en fondos de liquidez");
+		 }
 		 this.estadoActivo = false;
 		 
 		 return montoInvertido + (montoInvertido * TASAFLE * plazoDias) / 365.0;
