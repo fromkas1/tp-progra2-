@@ -1,5 +1,6 @@
 package ar.edu.ungs.billetera;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -480,8 +481,66 @@ public class Billetera implements IBilletera {
 	// [Alias] ([CVU])" - Lanza error si cantidadTop no es positiva
 	@Override
 	public List<String> cuentasConMayorVolumen(int cantidadTop) {
-		// TODO Auto-generated method stub
-		return null;
+		if (cantidadTop <= 0) {
+			throw new IllegalArgumentException("cantidadTop debe ser positiva");
+		}
+
+		List<Cuenta> cuentas = new ArrayList<>(todasLasCuentas.values());
+		cuentas.sort((c1, c2) -> Integer.compare(c2.getHistorial().size(), c1.getHistorial().size()));
+
+		List<String> topCuentas = new LinkedList<>();
+		int limite = Math.min(cantidadTop, cuentas.size());
+
+		for (int i = 0; i < limite; i++) {
+			topCuentas.add(cuentas.get(i).toString());
+		}
+
+		return topCuentas;
+	}
+
+	public String procesarInversionesFinalizanHoy(LocalDate hoy) {
+		if (hoy == null) {
+			throw new IllegalArgumentException("La fecha no puede ser nula");
+		}
+
+		StringBuilder resultado = new StringBuilder();
+
+		for (Cuenta cuenta : todasLasCuentas.values()) {
+			for (Actividad actividad : cuenta.getHistorial()) {
+				if (!(actividad instanceof OperacionInversion operacion)) {
+					continue;
+				}
+
+				Inversion inversion = operacion.getInversion();
+				if (!inversion.estaActivo()) {
+					continue;
+				}
+
+				LocalDate fechaVencimiento = inversion.fechainicio.plusDays(inversion.getPlazoDias());
+				if (hoy.equals(fechaVencimiento)) {
+					double montoDevuelto = inversion.calcularResultado(cuenta);
+					cuenta.acreditar(montoDevuelto);
+					cuenta.agregarMovimiento(new OperacionInversion(montoDevuelto, inversion, cuenta));
+
+					Usuario usuario = todosLosUsuarios.get(cuenta.getDNIPropietario());
+					if (usuario != null) {
+						usuario.actualizarTotalInvertido(inversion.montoInvertido);
+					}
+
+					resultado.append("Inversión ID ").append(inversion.getID())
+						.append(" en cuenta ").append(cuenta.getAlias())
+						.append(" (" ).append(cuenta.getCVU()).append(") finalizada. Resultado: $")
+						.append(montoDevuelto).append("\n");
+				}
+			}
+		}
+
+		if (resultado.length() == 0) {
+			return "No hay inversiones para procesar hoy.";
+		}
+
+		return resultado.toString();
+
 	}
 
 	private int generarIDInversion() {
