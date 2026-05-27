@@ -21,6 +21,9 @@ public class RentaFija extends Inversion {
 	}
 	
 	public double calcularResultado(Cuenta cuenta) {
+		if (cuenta == null) {
+			throw new IllegalArgumentException("Cuenta asociada no puede ser nula");
+		}
 		this.estadoActivo = false;
 		
 		return montoInvertido + montoInvertido * tasaInteres * plazoDias / 365.0;
