@@ -16,7 +16,7 @@ public abstract class Cuenta {
 	        throw new IllegalArgumentException("Ningun dato de la empresa puede ser nulo.");
 	    }
 		
-		if(CVU.length() != 22 || alias.length() < 5 || DNIPropietario.length() < 9 || DNIPropietario.length() > 6) {
+		if(CVU.length() != 22 || alias.length() < 5 || DNIPropietario.length() < 8  || DNIPropietario.length() > 9) {
 			throw new IllegalArgumentException("Para crear una empresa: "
 					+ "\n - El CVU debe tener 22 digitos."
 					+ "\n - El alias debe tener mas de 5 letras."
@@ -63,9 +63,10 @@ public abstract class Cuenta {
 	
 	public void debitar(double monto) {
 		if(!this.puedeDebitar(monto)) {
-			throw new IllegalStateException("No se puede debitar.");
+			throw new IllegalStateException("No se puede debitar.saldo insuficiente");
 		}
 		this.saldo -= monto;
+		
 	}
 	
 	// Para la creacion de la cuenta Premium, inicializar saldo > Monto minimo
@@ -106,6 +107,11 @@ public abstract class Cuenta {
 	public void agregarMovimiento(Transferencia nuevaTransferencia) {
 		this.historial.add(nuevaTransferencia);
 	}
+	
+	public void agregarMovimiento(OperacionInversion nuevaOperacionInversion) {
+		this.historial.add(nuevaOperacionInversion);
+	}
+	
 	
 	public void consultarMovimientos() {
 		

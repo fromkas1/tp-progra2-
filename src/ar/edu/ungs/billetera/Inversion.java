@@ -15,6 +15,16 @@ public abstract class Inversion {
 		this.plazoDias = plazoDias;
 		this.montoInvertido = montoInvertido;
 		this.estadoActivo = true;
+		
+		if (montoInvertido <= 0) {
+			throw new IllegalArgumentException("Monto debe ser positivo");
+		}
+		
+		if (plazoDias <= 0) {
+			throw new IllegalArgumentException("Plazo debe ser mayor a 0 días");
+		}
+		
+		
 	} 
 
 	public int getPlazoDias() { //lo usamos para el toString de OperacionInversion

@@ -67,6 +67,11 @@ public class Usuario {
         }
 
 	}
+	
+	public double consultarTotalinvertido() {
+		return this.totalInvertido;
+	}
+	
 
 	public void consultarMovimientos() {
 

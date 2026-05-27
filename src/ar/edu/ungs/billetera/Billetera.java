@@ -21,7 +21,7 @@ public class Billetera implements IBilletera {
 		this.todosLosUsuarios = new HashMap<>();
 		this.todasLasCuentas = new HashMap<>();
 		this.todasLasEmpresas = new HashMap<>();
-		
+		this.historialGlobal = new LinkedList<>();
 	}
 
 	// AGREGA LA EMPRESA A MAP TODASLASEMPRESAS - Lanza error si la empresa ya esta
@@ -229,6 +229,10 @@ public class Billetera implements IBilletera {
 	@Override
 	public void realizarTransferencia(String cvuOrigen, String cvuDestino, double monto) {
 		
+		if(cvuOrigen == null || cvuDestino ==null) {
+			throw new IllegalArgumentException();
+		}
+		
 		Cuenta cuentaCVUOrigen = todasLasCuentas.get(cvuOrigen);
 		
 		Cuenta cuentaCVUDestino = todasLasCuentas.get(cvuDestino);
@@ -236,16 +240,16 @@ public class Billetera implements IBilletera {
 		cuentaCVUOrigen.transferir(cuentaCVUDestino, monto);
 		
 		// Ver donde generar el numero de operacion 
-		Transferencia comprobante = new Transferencia(monto, cuentaCVUDestino, cuentaCVUDestino);
+		Transferencia comprobante = new Transferencia(monto, cuentaCVUOrigen, cuentaCVUDestino);
 		
 		cuentaCVUOrigen.agregarMovimiento(comprobante);
 		
 		cuentaCVUDestino.agregarMovimiento(comprobante);
 		
 		
+		historialGlobal.add(comprobante);
 		
-		
-		// Falta agregar transferencia en historial cuenta 
+		 
 		
 	}
 
@@ -253,23 +257,17 @@ public class Billetera implements IBilletera {
 	// usuario o la cuenta no existe, o si algun dato es invalido
 	@Override
 	public int realizarInversionRentaFija(String dni, String cvu, double monto, int plazoDias) {
+		
 		Usuario usuario = todosLosUsuarios.get(dni);
-		Cuenta cuenta = todasLasCuentas.get(cvu);
 		
 		if (usuario == null) {
 			throw new IllegalArgumentException("Usuario no existe");
 		}
 		
+		Cuenta cuenta = todasLasCuentas.get(cvu);
+		
 		if (cuenta == null) {
 			throw new IllegalArgumentException("Cuenta no existe");
-		}
-		
-		if (monto <= 0) {
-			throw new IllegalArgumentException("Monto debe ser positivo");
-		}
-		
-		if (plazoDias <= 0) {
-			throw new IllegalArgumentException("Plazo debe ser mayor a 0 días");
 		}
 		
 		int idInversion = generarIDInversion();
@@ -277,11 +275,16 @@ public class Billetera implements IBilletera {
 		
 		Inversion rentaFija = new RentaFija(idInversion, plazoDias, monto, tasaInteres);
 		cuenta.invertir(rentaFija, monto);
-		todasLasInversiones.put(idInversion, rentaFija);
+		
+		OperacionInversion comprobante = new OperacionInversion(monto,rentaFija,cuenta);
+		
+		
+		cuenta.agregarMovimiento(comprobante);
+		
 		usuario.actualizarTotalInvertido(monto);
 		
 		return idInversion;
-	
+		
 	}
 
 	// HACE UNA INVERSION DE TIPO RENTAFIJA Y RETORNA EL ID - Lanza error si el
@@ -289,6 +292,9 @@ public class Billetera implements IBilletera {
 	@Override
 	public int realizarInversionDivisa(String dni, String cvu, double monto, int plazoDias, String divisa,
 			double tasa) {
+		
+		
+		
 		Usuario usuario = todosLosUsuarios.get(dni);
 		Cuenta cuenta = todasLasCuentas.get(cvu);
 		
@@ -300,27 +306,15 @@ public class Billetera implements IBilletera {
 			throw new IllegalArgumentException("Cuenta no existe");
 		}
 		
-		if (monto <= 0) {
-			throw new IllegalArgumentException("Monto debe ser positivo");
-		}
-		
-		if (plazoDias <= 0) {
-			throw new IllegalArgumentException("Plazo debe ser mayor a 0 días");
-		}
-		
-		if (divisa == null || divisa.isEmpty()) {
-			throw new IllegalArgumentException("Divisa no puede ser nula ni vacía");
-		}
-		
-		if (tasa <= 0) {
-			throw new IllegalArgumentException("Tasa debe ser positiva");
-		}
-		
 		int idInversion = generarIDInversion();
 		
 		Inversion vinculadaDivisa = new VinculadaaDivisa(idInversion, plazoDias, monto, divisa, tasa);
 		cuenta.invertir(vinculadaDivisa, monto);
-		todasLasInversiones.put(idInversion, vinculadaDivisa);
+		
+		OperacionInversion comprobante = new OperacionInversion(monto,vinculadaDivisa,cuenta);
+		
+		cuenta.agregarMovimiento(comprobante);
+		
 		usuario.actualizarTotalInvertido(monto);
 		
 		return idInversion;
@@ -330,6 +324,7 @@ public class Billetera implements IBilletera {
 	// usuario o la cuenta no existe, o si algun dato es invalido
 	@Override
 	public int realizarInversionLiquidez(String dni, String cvu, double monto, int plazoDias) {
+		
 		Usuario usuario = todosLosUsuarios.get(dni);
 		Cuenta cuenta = todasLasCuentas.get(cvu);
 
@@ -343,19 +338,16 @@ public class Billetera implements IBilletera {
 		}
 
 
-		if (monto <= 0) {
-			throw new IllegalArgumentException("Monto debe ser positivo");
-		}
-
-		if (plazoDias <= 0) {
-			throw new IllegalArgumentException("Plazo debe ser mayor a 0 días");
-		}
-
 		int idInversion = generarIDInversion();
+		
 		Inversion vinculadaLiquidez = new FondoLiquidezEmpresarial(idInversion, plazoDias, monto);
 
 		cuenta.invertir(vinculadaLiquidez, monto);
-		todasLasInversiones.put(idInversion, vinculadaLiquidez);
+		
+		OperacionInversion comprobante = new OperacionInversion(monto,vinculadaLiquidez,cuenta);
+		
+		cuenta.agregarMovimiento(comprobante);
+		
 		usuario.actualizarTotalInvertido(monto);
 
 		return idInversion;
@@ -393,8 +385,16 @@ public class Billetera implements IBilletera {
 	 */
 	@Override
 	public List<String> consultarHistorialGlobal() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List <String> historial = new LinkedList<>();
+		
+		for (Actividad actividadGlobal : historialGlobal) {
+			
+			historial.add(actividadGlobal.toString());
+		}
+		
+		
+		return historial;
 	}
 
 	// DEVUELVE LA LIST DE ACTIVIDADES DE HISTORIAL DE CUENTA CON EL MISMO FORMATO
@@ -444,8 +444,16 @@ public class Billetera implements IBilletera {
 	// CUENTAS - Lanza error si el usuario no existe
 	@Override
 	public double obtenerTotalInvertido(String dniUsuario) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		Usuario usuario = todosLosUsuarios.get(dniUsuario);
+		
+		if(usuario == null) {
+			throw new IllegalArgumentException("usuario no existe");
+		}
+		
+		double totalInvertido=usuario.obtenerTotalInvertido();
+		
+		return totalInvertido;
 	}
 
 	// DEVUELVE LAS CUENTAS CON MAYOR CANTIDAD DE ACTIVIDADES REGISTRADAS "[Tipo]:

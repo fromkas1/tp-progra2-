@@ -51,7 +51,7 @@ public class Principal {
         }
 
         System.out.println("  Creando Cuenta Premium válida con $1.000.000...");
-        String cvuCarlosPremium = billetera.crearCuentaPremium("22222222", "carlos.premium", 1000000);
+        String cvuCarlosPremium = billetera.crearCuentaPremium("22222222", "carlos.premium", 1200000);
 
         System.out.println("  Creando Cuenta Corporativa...");
         String cvuAnaCorp = billetera.crearCuentaCorporativa("11111111", "ana.corp", "30-11111111-9");
@@ -73,7 +73,8 @@ public class Principal {
         System.out.println("  Saldo Disponible Carlos: $" + billetera.obtenerSaldoDisponible(cvuCarlosPremium));
         System.out.println("  Saldo Disponible Ana: $" + billetera.obtenerSaldoDisponible(cvuAnaRegular) + "\n");
         
-        System.out.println(billetera.consultarHistorialCuenta(cvuAnaRegular));
+        
+        
         
         // 4. Inversiones
         System.out.println("[4] Realizando inversiones...");
