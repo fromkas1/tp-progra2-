@@ -46,6 +46,9 @@ public class VinculadaaDivisa extends Inversion implements Precancelable{
 	}
 	
 	public double calcularResultado(Cuenta cuenta) {
+		if (cuenta == null) {
+			throw new IllegalArgumentException("Cuenta asociada no puede ser nula");
+		}
 		this.estadoActivo = false;
 		
 		double divisasEquivalente = montoInvertido / cotizacionInicial;
