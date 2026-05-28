@@ -25,7 +25,7 @@ public class CuentaCorporativa extends Cuenta{
 	public String toString() {
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("Corporativa: ").append(this.alias).append("(").append(this.CVU).append(")");
+		sb.append("\n Corporativa: ").append(this.alias).append("(").append(this.CVU).append(")");
 		
 		return sb.toString();
 	}

@@ -57,4 +57,9 @@ public class Empresa {
 		
 		return DNIAutorizados.contains(DNI);
 	}
+	
+	@Override
+	public String toString() {
+		return "Empresa: " + nombre + " (CUIT: " + CUIT + ")";
+	}
 }

@@ -28,7 +28,7 @@ public class CuentaPremium extends Cuenta{
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("Premium: ").append(this.alias).append("(").append(this.CVU).append(")");
+		sb.append("\n Premium: ").append(this.alias).append("(").append(this.CVU).append(")");
 		
 		return sb.toString();
 	}

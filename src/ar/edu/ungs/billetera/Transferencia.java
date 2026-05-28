@@ -15,11 +15,11 @@ public class Transferencia extends Actividad{
 		
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("Transferencia:\n");
+		sb.append("\n Transferencia:\n");
 		sb.append("\t fecha: [").append(this.fecha).append("]\n");
 		sb.append("\t origen: [").append(this.origen.getDNIPropietario()).append("] ([").append(this.origen.getCVU()).append("])\n");
 		sb.append("\t destino: [").append(this.destino.getDNIPropietario()).append("] ([").append(this.destino.getCVU()).append("])\n");
-		sb.append("\t monto: [").append(this.monto).append("])\n");
+		sb.append("\t monto: [").append(this.monto).append("]\n");
 		sb.append("\t [Aprobado").append("]");
 		
 		return sb.toString();

@@ -20,10 +20,10 @@ public class OperacionInversion extends Actividad{
 		//usamos el formato que nos pide en la segunda parte
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("Inversion: \n");
-		sb.append("\t fecha: [").append(this.fecha).append("] \\n");
+		sb.append("\n Inversion: \n");
+		sb.append("\t fecha: [").append(this.fecha).append("] \n");
 		sb.append("\t origen: [").append(this.origen.getDNIPropietario()).append("] ([").append(this.origen.getCVU()).append("]) \n");
-		sb.append("\t desc: [").append(this.inversion.getClass()).append("] \n");
+		sb.append("\t desc: [").append(this.inversion.getClass().getSimpleName()).append("] \n");
 		sb.append("\t monto: [").append(this.monto).append("] \n");
 		sb.append("\t plazo: [").append(this.inversion.getPlazoDias()).append("] \n");
 		sb.append("\t [Aprobado]");

@@ -21,7 +21,7 @@ public class CuentaRegular extends Cuenta{
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("Regular: ").append(this.alias).append("(").append(this.CVU).append(")");
+		sb.append("\n Regular: ").append(this.alias).append("(").append(this.CVU).append(")");
 		
 		return sb.toString();
 	}
