@@ -13,17 +13,15 @@ public class Usuario {
 
 	public Usuario(String DNI, String nombreYApellido, String telefono, String email) {
 
-		// IREP
-
 		if (DNI == null || DNI.isEmpty() || DNI.length() > 8) {
 
 			throw new IllegalArgumentException("DNI no puede ser null , ni estar vacio , ni ser mayor a 8 digitos ");
 		}
 
-		if (nombreYApellido == null || nombreYApellido.isEmpty() || !(nombreYApellido.contains(" "))) {
+		if (nombreYApellido == null || nombreYApellido.isEmpty()) {
 
 			throw new IllegalArgumentException(
-					"nombreYApellido no puede ser null ni estar vacio y debe contener un espacio");
+					"nombreYApellido no puede ser null ni estar vacio");
 		}
 
 		if (telefono == null || telefono.isEmpty()) {

@@ -7,17 +7,20 @@ public class FondoLiquidezEmpresarial extends Inversion{
 	 public FondoLiquidezEmpresarial(int ID, int plazoDias, double montoInvertido){
 		 super(ID, plazoDias, montoInvertido);
 		 
-		 //IREP
+		 
 		 if (montoInvertido < MONTO_MINIMO) {
 				throw new IllegalArgumentException("El monto minimo para el Fondo de Liquidez es de $" + MONTO_MINIMO);
 			}
 	}
 	 
+	 @Override
 	 public double calcularResultado(Cuenta cuenta) {
 		 if (cuenta == null) {
+			 
 			 throw new IllegalArgumentException("Cuenta asociada no puede ser nula");
 		 }
 		 if (!(cuenta instanceof CuentaCorporativa)) {
+			 
 			 throw new IllegalArgumentException("Solo cuentas corporativas pueden invertir en fondos de liquidez");
 		 }
 		 this.estadoActivo = false;
@@ -27,6 +30,7 @@ public class FondoLiquidezEmpresarial extends Inversion{
 
 	 @Override
 	 public String toString() {
+		 
 		 return "Fondo Liquidez Empresarial {id=" + ID + ", monto=" + montoInvertido + ", plazo=" + plazoDias + ", tasa FLE=" + TASAFLE + "}";
 	 }
 }

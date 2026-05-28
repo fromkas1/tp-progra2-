@@ -28,39 +28,23 @@ public abstract class Cuenta {
 		this.historial = new ArrayList<>();
 	}
 
-	public String getDNIPropietario() { // dato que necesitamos en Transferencia
-		return this.DNIPropietario;
-	}
-
-	public String getCVU() { // dato que necesitamos en Transferencia
-		return this.CVU;
-	}
-
-	public String getAlias() {
-		return this.alias;
-	}
-
-	public double obtenerSaldo() {
-		return saldo;
-	}
-
-	public List<Actividad> getHistorial() {
-		return historial;
-	}
-
 	public abstract boolean puedeAcreditar(double monto); // depende de las reglas del tipo de cuenta
 
 	public abstract boolean puedeDebitar(double monto); // depende de las reglas del tipo de cuenta
 
 	public void acreditar(double monto) {
+		
 		if (!this.puedeAcreditar(monto)) {
+			
 			throw new IllegalStateException("No se puede acreditar.");
 		}
 		this.saldo += monto;
 	}
 
 	public void debitar(double monto) {
+		
 		if (!this.puedeDebitar(monto)) {
+			
 			throw new IllegalStateException("No se puede debitar.saldo insuficiente");
 		}
 		this.saldo -= monto;
@@ -69,30 +53,38 @@ public abstract class Cuenta {
 
 	// Para la creacion de la cuenta Premium, inicializar saldo > Monto minimo
 	public double establecerSaldoInicial(double nuevoSaldo) {
+		
 		this.saldo = nuevoSaldo;
+		
 		return saldo;
 	}
 
 	public void transferir(Cuenta destino, double monto) {
 		if (destino == null) {
+			
 			throw new IllegalArgumentException("Cuenta destino no puede ser nula");
 		}
 		if (monto <= 0) {
+			
 			throw new IllegalArgumentException("Monto debe ser positivo");
 		}
 		if (this.saldo < monto) {
+			
 			throw new IllegalStateException("Saldo insuficiente");
 		}
 
 		this.debitar(monto);
+		
 		destino.acreditar(monto);
 	}
 
 	public void invertir(Inversion nuevaInversion, double monto) {
 		if (nuevaInversion == null) {
+			
 			throw new IllegalArgumentException("Inversión no puede ser nula");
 		}
 		if (monto <= 0) {
+			
 			throw new IllegalArgumentException("Monto debe ser positivo");
 		}
 
@@ -100,14 +92,16 @@ public abstract class Cuenta {
 	}
 
 	public void agregarMovimiento(Transferencia nuevaTransferencia) {
+		
 		this.historial.add(nuevaTransferencia);
 	}
 
 	public void agregarMovimiento(OperacionInversion nuevaOperacionInversion) {
+		
 		this.historial.add(nuevaOperacionInversion);
 	}
 
-	public void precancerlarInversion(int idInversion) {
+	public double precancerlarInversion(int idInversion) {
 
 		Inversion inversionDelId = null;
 
@@ -124,20 +118,24 @@ public abstract class Cuenta {
 		}
 
 		if (inversionDelId == null) {
+			
 			throw new IllegalArgumentException("id de la inversion no existe");
 		}
 
 		if (!inversionDelId.estaActivo()) {
+			
 			throw new IllegalArgumentException("id de la inversion no esta activa");
 		}
 
 		double montoDevueltoMasIntereses = 0;
 
 		if (inversionDelId instanceof RentaFija rentaFija) {
+			
 			montoDevueltoMasIntereses = rentaFija.precancelar();
 		}
 
 		else if (inversionDelId instanceof VinculadaaDivisa vinculadaADivisa) {
+			
 			montoDevueltoMasIntereses = vinculadaADivisa.precancelar();
 		}
 
@@ -150,14 +148,36 @@ public abstract class Cuenta {
 		Actividad nuevoComprobante = new OperacionInversion(montoDevueltoMasIntereses, inversionDelId, this);
 
 		this.historial.add(nuevoComprobante);
+		
+		return inversionDelId.getMontoInvertido();
 
 	}
+	
+	public String getDNIPropietario() { 
+		
+		return this.DNIPropietario;
+	}
 
-	/*
-	 * public void consultarMovimientos() {
-	 * 
-	 * }
-	 */
+	public String getCVU() { 
+		
+		return this.CVU;
+	}
+
+	public String getAlias() {
+		
+		return this.alias;
+	}
+
+	public double obtenerSaldo() {
+		
+		return saldo;
+	}
+
+	public List<Actividad> getHistorial() {
+		
+		return historial;
+	}
+	
 
 	public abstract String toString();
 

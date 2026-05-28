@@ -17,9 +17,10 @@ public class Empresa {
 	        throw new IllegalArgumentException("Ningun dato de la empresa puede ser nulo.");
 	    }
 		
-		if(CUIT.length() != 13 || nombre.length() < 3 || telefono.length() < 10 || !email.contains("@") || nombreContacto.length() < 3) {
+		if(CUIT.length() > 13 || nombre.length() < 3 || telefono.length() < 8 || !email.contains("@") || nombreContacto.length() < 3) {
 			throw new IllegalArgumentException("Para crear una empresa: "
-					+ "\n - El CUIT debe tener 11 digitos."
+					+ "\n - El CUIT no debe ser mayor a 13 digitos."
+					+ "\n - El telefono debe tener al menos 8 digitos"
 					+ "\n - El nombre debe tener mas de 2 letras."
 					+ "\n - El email debe ser valido."
 					+ "\n - El nombre de contacto debe tener mas de 2 letras.");
@@ -34,20 +35,23 @@ public class Empresa {
 	}
 	
 	public void agregarAutorizado(String DNI) {
-		// VALIDACIONES
+		
 		if(DNI == null || DNI.isEmpty() || DNI.length() > 8 || DNI.length() < 7){
+			
 			throw new IllegalArgumentException("El DNI no puede ser nulo, vacio ni ser menor a 7 y mayor a 8");
 		}
 		
 		if(estaAutorizado(DNI)) {
+			
 			throw new IllegalArgumentException("La persona con DNI:" + DNI +" no esta autorizado");
 		}
 		DNIAutorizados.add(DNI);
 	}
 	
 	public boolean estaAutorizado(String DNI) {
-		// VALIDACIONES
+		
 		if(DNI == null || DNI.isEmpty() || DNI.length() > 8 || DNI.length() < 7){
+			
 			throw new IllegalArgumentException("El DNI no puede ser nulo, vacio ni ser menor a 7 y mayor a 8");
 		}
 		

@@ -27,6 +27,10 @@ public abstract class Inversion {
 		
 	} 
 	
+	public abstract double calcularResultado(Cuenta cuentaAsociada);
+	
+	public abstract String toString();
+	
 	public boolean estaActivo() {
 		return estadoActivo;
 	}
@@ -35,13 +39,11 @@ public abstract class Inversion {
 		return ID;
 	}
 
-	public int getPlazoDias() { //lo usamos para el toString de OperacionInversion
+	public int getPlazoDias() { 
 		return this.plazoDias;
 	}
 	
-	
-	
-	public abstract double calcularResultado(Cuenta cuentaAsociada);
-	
-	public abstract String toString();
+	public double getMontoInvertido() {
+		return montoInvertido;
+	}
 }

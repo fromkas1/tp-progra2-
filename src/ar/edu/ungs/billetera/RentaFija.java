@@ -2,7 +2,7 @@ package ar.edu.ungs.billetera;
 
 import java.time.temporal.ChronoUnit;
 
-public class RentaFija extends Inversion {
+public class RentaFija extends Inversion implements Precancelable{
 	private double tasaInteres;
 	
 	public RentaFija(int ID, int plazoDias, double montoInvertido, double tasaInteres) {
@@ -11,6 +11,7 @@ public class RentaFija extends Inversion {
 	}
 	
 	public double precancelar() {
+		
 		long cantDiasTomados = ChronoUnit.DAYS.between(this.fechainicio, Utilitarios.hoy()); //para poder restar fechas
 		
 		double intereses = this.montoInvertido * this.tasaInteres * cantDiasTomados / 365.0; //calcula los intereses hasta los dias que pasaron
@@ -20,8 +21,10 @@ public class RentaFija extends Inversion {
 		return this.montoInvertido + intereses / 2.0;
 	}
 	
+	@Override
 	public double calcularResultado(Cuenta cuenta) {
 		if (cuenta == null) {
+			
 			throw new IllegalArgumentException("Cuenta asociada no puede ser nula");
 		}
 		this.estadoActivo = false;

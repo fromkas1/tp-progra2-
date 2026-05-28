@@ -15,7 +15,7 @@ public abstract class Actividad {
     
 		this.fecha = Utilitarios.hoy();
 		this.monto = monto;
-		this.numeroOperacion = "Operacion NÂ°" + contadorActividades;
+		this.numeroOperacion = "Operacion N°" + contadorActividades;
 
 		contadorActividades++;
 	}

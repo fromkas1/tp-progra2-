@@ -12,7 +12,7 @@ public class Transferencia extends Actividad{
 
 	@Override
 	public String toString() {
-		//usamos el formato que nos pide en la segunda parte
+		
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("Transferencia:\n");

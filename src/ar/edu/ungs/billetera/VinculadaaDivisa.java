@@ -27,6 +27,7 @@ public class VinculadaaDivisa extends Inversion implements Precancelable{
 		}
 		
 		this.divisaReferencia = divisaReferencia;
+		
 		this.tasaInteresDivisa = tasaInteresDivisa;
 		
 		this.cotizacionInicial = Utilitarios.consultarCotizacion(divisaReferencia); //saber cuanto estaba la moneda cuando se creo la inversion
@@ -34,6 +35,7 @@ public class VinculadaaDivisa extends Inversion implements Precancelable{
 	}
 	
 	public double precancelar() {
+		
 		long cantDiasTomados = ChronoUnit.DAYS.between(this.fechainicio, Utilitarios.hoy()); //para poder restar fechas
 		
 		double divisasCompradas = this.montoInvertido / this.cotizacionInicial; //saber cuanto se invirtio cuando se creo
@@ -45,13 +47,16 @@ public class VinculadaaDivisa extends Inversion implements Precancelable{
 		return (divisasCompradas + (intereses / 2.0)) * divisaHoy; //calcula con los intereses y lo multiplica por la divisa para saber en pesos cuanto es
 	}
 	
+	@Override
 	public double calcularResultado(Cuenta cuenta) {
 		if (cuenta == null) {
+			
 			throw new IllegalArgumentException("Cuenta asociada no puede ser nula");
 		}
 		this.estadoActivo = false;
 		
 		double divisasEquivalente = montoInvertido / cotizacionInicial;
+		
 		return (divisasEquivalente + divisasEquivalente * tasaInteresDivisa * plazoDias / 365.0)
 			* Utilitarios.consultarCotizacion(divisaReferencia);
 	}

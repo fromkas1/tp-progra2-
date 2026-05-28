@@ -7,6 +7,7 @@ public class CuentaPremium extends Cuenta{
 		super(CVU, alias, DNIPropietario);	
 		
 		if (montoInicial<MONTO_MINIMO) {
+			
 			throw new IllegalArgumentException("Monto inicial debe ser superior al monto minimo");
 		}
 	
